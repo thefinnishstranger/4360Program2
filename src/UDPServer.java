@@ -10,7 +10,7 @@ public class UDPServer
 		
 		try 
 		{
-			DatagramSocket serverSocket = new DatagramSocket(10999); //creates a datagram socket and binds it to port 10999
+			DatagramSocket serverSocket = new DatagramSocket(9999); //creates a datagram socket and binds it to port 10999
 			byte[] receiveData = new byte[1024];
 			byte[] sendData = new byte[1024];
 			

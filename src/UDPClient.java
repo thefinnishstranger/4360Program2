@@ -9,7 +9,7 @@ public class UDPClient
 	{
 		String serverName = "localhost";
 		//String serverName = "192.168.1.152";
-		int port = 10999;
+		int port = 9999;
 		
 		try 
 		{
