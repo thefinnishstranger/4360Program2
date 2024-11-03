@@ -19,8 +19,6 @@ public class NGustavsonUDPClient {
             DatagramSocket clientSocket = new DatagramSocket();
             InetAddress IPAddress = InetAddress.getByName(serverName);
 
-            System.out.println("UDP Client started...");
-
             // Start the timer
             long startTime = System.nanoTime();
             
@@ -35,8 +33,8 @@ public class NGustavsonUDPClient {
             // Stop the timer
             long endTime = System.nanoTime();
 
-            // Calculate RTT in milliseconds
-            double RTT = (endTime - startTime) / 1_000_000.0;
+            // Calculate RTT in milliseconds without rounding
+            double actualRTT = (endTime - startTime) / 1_000_000.0;
 
             // Get the received message correctly
             String receivedSentence = new String(receivePacket.getData(), 0, receivePacket.getLength());
@@ -45,15 +43,14 @@ public class NGustavsonUDPClient {
             if (!receivedSentence.equals(sentence)) {
                 System.out.println("Error: Mismatched response from server.");
             } else {
-                int lengthBits = sentence.length() * 8;
-                double throughput = lengthBits / (RTT / 2 * 1_000);  // Throughput in Mbps
+                int lengthBits = sentence.length() * 8;  // Sentence length in bits
+                double throughput = lengthBits / ((actualRTT / 2) * 1_000);  // Throughput in Mbps using actual RTT
 
-                System.out.printf("Sentence: \"%s\"\n", sentence);
-                System.out.printf("RTT: %.2f ms\n", RTT);
-                System.out.printf("Throughput: %.1f Mbps\n", throughput);
+                // Print rounded output
+                System.out.printf("Length of sentence: %d bits\n", lengthBits);
+                System.out.printf("RTT: %.2f ms\n", actualRTT); // Display RTT rounded to two decimals
+                System.out.printf("Throughput: %.1f Mbps\n", throughput); // Display throughput rounded to one decimal
             }
-
-            System.out.println("UDP Server says: " + receivedSentence);
 
             clientSocket.close();
             
